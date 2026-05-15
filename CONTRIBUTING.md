@@ -30,7 +30,51 @@ When adding new skills:
 2. Follow naming conventions (lowercase with hyphens)
 3. Include both SKILL.md and appropriate references/scripts
 4. Update the root README.md to include the new skill
-5. Ensure content is platform-agnostic (works across Cursor, Claude Code, etc.)
+5. Update root `SKILL.md`, `.claude-plugin/marketplace.json`, and `.plugin/plugin.json` when publishing the skill
+6. Update `researcher/corpus/index.json` with the new skill's name, activation scenarios, mechanism IDs, and claim IDs
+7. Add an entry to `researcher/fixtures/activation-cases.jsonl` if the skill could be confused with an existing one
+8. Ensure content is platform-agnostic (works across Cursor, Claude Code, etc.)
+9. Run `python3 researcher/scripts/validate_repo.py --strict` and `python3 researcher/scripts/run_benchmarks.py` before opening a PR
+
+## Researcher Operating System Contributions
+
+The repository ships with a file-based research-to-skill operating system in `researcher/`. Contributions that introduce skill changes derived from external research should flow through it.
+
+### Run lifecycle
+
+```
+initialized -> retrieved -> evaluated -> proposed -> novelty_checked -> validated -> pr_ready -> closed
+```
+
+Use `researcher/scripts/research_loop.py` subcommands rather than editing `run-state.json` by hand. Each transition appends to the run's thread log and updates the state machine atomically.
+
+### Mechanism promotion
+
+New behavior changes proposed for the corpus go through `researcher/mechanisms/registry.jsonl`. The promotion path is gated:
+
+1. Author the proposal in the run's `proposals/mechanism-proposal.jsonl`.
+2. Pass `validate_run.py --run-dir <run>`.
+3. Run `research_loop.py promote-mechanisms --run-dir <run> --reviewed-by <handle>`. This appends to the registry and to `researcher/mechanisms/ledgers/accepted.jsonl`.
+
+Rejected mechanisms append to `ledgers/rejected.jsonl` so future agents do not rediscover them.
+
+### Claim provenance
+
+Any numeric, benchmark, or volatile claim added to a published skill should also receive an entry in `researcher/claims/index.jsonl` with `claim_id`, `owning_skill`, `section`, `source_url`, `retrieved_at`, `evidence_strength`, `volatility`, and `last_reviewed`. The validator checks ownership and source paths.
+
+### Parked runs
+
+Runs that hit human-review gates land in `researcher/queue/parked.jsonl` and the dashboard at `researcher/reports/parked-review.md`. Reviewers should:
+
+1. Read `researcher/runs/<run-id>/THREAD.md` and `sources/evidence/`.
+2. Complete the next required step (retrieve, evaluate, propose, novelty, validate-run, or pr-ready).
+3. Close the run with `research_loop.py close --status accepted|rejected|reference-only|abandoned --reason <text> --reviewed-by <handle>`.
+
+The continuous loop will reap closed runs into `researcher/queue/done.jsonl` on the next iteration.
+
+### Runtime state is not committed
+
+`researcher/runs/*/` (except the seed run), `researcher/queue/*.jsonl`, and `researcher/reports/{logs,snapshots,loop-events.jsonl,loop-failures.jsonl,status.md,parked-review.md}` are gitignored. PRs should not introduce new committed runs; bug fixtures belong in `researcher/fixtures/` instead.
 
 ## Skill Structure Requirements
 

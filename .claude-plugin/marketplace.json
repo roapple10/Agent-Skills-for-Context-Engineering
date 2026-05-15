@@ -5,13 +5,13 @@
     "email": "muratcan.koylan@outlook.com"
   },
   "metadata": {
-    "description": "Context Engineering skills for building production-grade AI agent systems",
-    "version": "2.0.0"
+    "description": "Context engineering and harness engineering skills plus a file-based autonomous research-to-skill operating system for production-grade AI agent systems",
+    "version": "2.2.0"
   },
   "plugins": [
     {
       "name": "context-engineering",
-      "description": "Comprehensive context engineering skills for building production-grade AI agent systems — covering fundamentals, degradation patterns, compression, optimization, multi-agent coordination, memory systems, tool design, filesystem context, hosted agents, evaluation, project development, and cognitive architecture",
+      "description": "Comprehensive context engineering and harness engineering skills for production-grade AI agent systems: fundamentals, degradation patterns, compression, optimization, multi-agent coordination, memory systems, tool design, filesystem context, hosted agents, evaluation, autonomous harnesses, project development, and cognitive architecture. Ships with a researcher operating system (rubrics, mechanism registry, claim provenance, run state machine, adversarial benchmarks, continuous loop).",
       "source": "./",
       "strict": false,
       "skills": [
@@ -26,6 +26,7 @@
         "./skills/hosted-agents",
         "./skills/evaluation",
         "./skills/advanced-evaluation",
+        "./skills/harness-engineering",
         "./skills/project-development",
         "./skills/bdi-mental-states"
       ]

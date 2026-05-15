@@ -1,6 +1,6 @@
 ---
 name: project-development
-description: This skill should be used when the user asks to "start an LLM project", "design batch pipeline", "evaluate task-model fit", "structure agent project", or mentions pipeline architecture, agent-assisted development, cost estimation, or choosing between LLM and traditional approaches.
+description: This skill should be used when starting or restructuring LLM projects: task-model fit analysis, batch pipeline design, staged artifact flows, cost estimation, agent-assisted development, and decisions between LLM and traditional approaches.
 ---
 
 # Project Development Methodology
@@ -254,6 +254,7 @@ See [Case Studies](./references/case-studies.md) for detailed analysis.
 6. **Premature optimization**: Adding caching, parallelization, and optimization before the basic pipeline works correctly wastes effort on code that may be discarded during iteration.
 7. **Model version lock-in**: Building pipelines that only work with one specific model version creates fragile systems. Test across model generations and abstract the LLM call layer so models can be swapped without rewriting pipeline logic.
 8. **Evaluation-less deployment**: Shipping agent pipelines without measuring output quality means regressions go undetected. Define quality metrics during development and run evaluation checks before and after every model or prompt change.
+9. **Provenance drift**: Raw inputs, intermediate outputs, and final proposals separated across ad hoc folders become impossible to audit. Keep each pipeline run in a single directory with source evidence, transformations, validation reports, and decisions.
 
 ## Integration
 

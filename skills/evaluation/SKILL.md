@@ -1,6 +1,6 @@
 ---
 name: evaluation
-description: This skill should be used when the user asks to "evaluate agent performance", "build test framework", "measure agent quality", "create evaluation rubrics", or mentions LLM-as-judge, multi-dimensional evaluation, agent testing, or quality gates for agent pipelines.
+description: This skill should be used when building agent evaluation systems: deterministic checks, regression suites, multi-dimensional rubrics, quality gates, production monitoring, baseline comparison, and outcome measurement for agent pipelines.
 ---
 
 # Evaluation Methods for Agent Systems
@@ -24,7 +24,9 @@ Focus evaluation on outcomes rather than execution paths, because agents may fin
 
 Use multi-dimensional rubrics instead of single scores because one number hides critical failures in specific dimensions. Capture factual accuracy, completeness, citation accuracy, source quality, and tool efficiency as separate dimensions, then weight them for the use case.
 
-Deploy LLM-as-judge for scalable evaluation across large test sets while supplementing with human review to catch edge cases, hallucinations, and subtle biases that automated evaluation misses.
+Use model-judged evaluation only after deterministic checks and rubrics are stable. When the work centers on judge prompts, pairwise comparison, calibration, or bias mitigation, switch to Advanced Evaluation.
+
+Run deterministic validation before LLM judgment whenever the artifact has machine-checkable structure. Schema validity, duplicate keys, rubric math, manifest sync, retrieval status, and required evidence paths should fail fast before an evaluator spends tokens or returns a subjective score.
 
 **Performance Drivers: The 95% Finding**
 
@@ -137,6 +139,7 @@ Follow this sequence to build an evaluation framework, because skipping early st
 6. Run evaluations on all significant changes and compare against the baseline.
 7. Track metrics over time for trend analysis because gradual degradation is harder to notice than sudden drops.
 8. Supplement automated evaluation with human review on a regular cadence.
+9. Separate deterministic validation failures from quality judgments so invalid artifacts cannot be laundered by a favorable LLM score.
 
 ### Avoiding Evaluation Pitfalls
 

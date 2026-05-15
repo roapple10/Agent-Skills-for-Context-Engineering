@@ -1,6 +1,6 @@
 ---
 name: filesystem-context
-description: This skill should be used when the user asks to "offload context to files", "implement dynamic context discovery", "use filesystem for agent memory", "reduce context window bloat", or mentions file-based context management, tool output persistence, agent scratch pads, or just-in-time context loading.
+description: This skill should be used when agent work needs file-backed context: durable scratchpads, tool-output offloading, just-in-time discovery, cross-agent handoff files, filesystem memory, or cleanup policies for context stored outside the prompt.
 ---
 
 # Filesystem-Based Context Engineering
@@ -190,6 +190,8 @@ project/
 
 Use consistent naming conventions and include timestamps or IDs in scratch files for disambiguation.
 
+For autonomous research loops, store raw retrieved evidence under the run that consumed it, for example `researcher/runs/<run-id>/sources/evidence/raw/`. Do not leave raw research dumps in the repository root; root-level artifacts become hard to audit and easy to cite without provenance.
+
 ### Token Accounting
 
 Measure where tokens originate before and after applying filesystem patterns, because optimizing without measurement leads to wasted effort:
@@ -240,6 +242,7 @@ Result: Agent can search history file to recover details lost in summarization
 8. Measure token savings to validate filesystem patterns are effective
 9. Implement cleanup for scratch files to prevent unbounded growth
 10. Guard self-modification patterns with validation
+11. Keep raw evidence next to the run, evaluation, and proposal that used it
 
 ## Gotchas
 

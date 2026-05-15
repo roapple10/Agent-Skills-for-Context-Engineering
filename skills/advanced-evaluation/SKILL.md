@@ -1,6 +1,6 @@
 ---
 name: advanced-evaluation
-description: This skill should be used when the user asks to "implement LLM-as-judge", "compare model outputs", "create evaluation rubrics", "mitigate evaluation bias", or mentions direct scoring, pairwise comparison, position bias, evaluation pipelines, or automated quality assessment.
+description: This skill should be used for advanced LLM evaluation: LLM-as-judge systems, direct scoring, pairwise comparison, rubric calibration, evaluator bias mitigation, confidence scoring, and automated quality assessment.
 ---
 
 # Advanced Evaluation
@@ -109,10 +109,11 @@ Always require justification before the score in all scoring prompts because res
 
 Apply position bias mitigation in every pairwise evaluation:
 
-1. First pass: Response A in first position, Response B in second
-2. Second pass: Response B in first position, Response A in second
-3. Consistency check: If passes disagree, return TIE with reduced confidence
-4. Final verdict: Consistent winner with averaged confidence
+1. Run deterministic pre-checks first: both candidates must satisfy the same schema, source-evidence requirements, and scope constraints.
+2. First judge pass: Response A in first position, Response B in second.
+3. Second judge pass: Response B in first position, Response A in second.
+4. Consistency check: If passes disagree, return TIE with reduced confidence.
+5. Final verdict: Consistent winner with averaged confidence and explicit tie-breaker rationale.
 
 **Prompt Structure for Pairwise Comparison**:
 ```
